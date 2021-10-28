@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   
   try{
     const categoryData = await  Category.findByPK(req.params.id, {
@@ -49,8 +49,24 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/:id', (req, res) => {
-  // update a category by its `id` value
+router.put('/:id', async (req, res) => {
+  
+  try{
+    const categoryData = await  Category.update(req.body, {
+      where: {id: req.params.id}
+    });
+    res.status(200).json(categoryData);
+
+    if(!categoryData){
+      res.status(404).json({message: 'Category not found!'});
+    }
+
+  }
+  catch (err){
+    console.log(err);
+    res.status(500).json(err);
+  }
+  
 });
 
 router.delete('/:id', (req, res) => {

@@ -7,20 +7,26 @@ router.get('/', async (req, res) => {
   
   try{
     const productTagData = await  ProductTag.findAll();
-    res.status(200).json(productTagData);
+    res.status(200).json(productData, {
+      // be sure to include its associated Product data
+      include: [{model:Product, through: ProductTag}]
+    });
   }
   catch (err){
     console.log(err);
     res.status(500).json(err);
   }
-  // be sure to include its associated Product data
+  
 });
 
 router.get('/:id', async (req, res) => {
   
   try{
     const productTagData = await  ProductTag.findByPk(req.params.id);
-    res.status(200).json(productTagData);
+    res.status(200).json(productData, {
+      // be sure to include its associated Product data
+      include: [{model:Product, through: ProductTag}]
+    });
 
     if(!productTagData){
       res.status(404).json({message: 'Tag not found!'});
@@ -46,7 +52,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   // update a tag's name by its `id` value
   try{
   const tagData = await Book.update(
