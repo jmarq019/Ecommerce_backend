@@ -39,7 +39,6 @@ router.get('/:id', async (req, res) => {
     console.log(err);
     res.status(500).json(err);
   }
-  // be sure to include its associated Product and Tag data
 });
 
 // create new product
@@ -120,7 +119,7 @@ router.delete('/:id', (req, res) => {
   // delete one product by its `id` value
   Product.destroy({
     where: {
-      product_id: req.params.id,
+      id: req.params.id,
     },
   })
     .then((deletedProduct) => {
